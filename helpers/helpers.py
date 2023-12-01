@@ -21,7 +21,7 @@ def init_curses():
     return scr
 
 
-YEAR = "2022"
+YEAR = "2023"
 BASE_URL = f"https://adventofcode.com/"
 
 NEIGHBORS = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
