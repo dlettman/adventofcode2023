@@ -1,10 +1,12 @@
 import sys
+
 sys.path.append("..")
 from helpers import helpers
 import pyperclip
 import numpy
 
 NEIGHBORS = helpers.NEIGHBORS
+
 
 def is_symbol(char):
     return (not char.isdigit()) and char != "."
@@ -24,12 +26,14 @@ def part_one(input_filename):
                         neighbor_coord = numpy.add((x, y), neighbor)
                         if neighbor_coord[0] >= 0 and neighbor_coord[1] >= 0:
                             try:
-                                if is_symbol(input[neighbor_coord[1]][neighbor_coord[0]]):
+                                if is_symbol(
+                                    input[neighbor_coord[1]][neighbor_coord[0]]
+                                ):
                                     found_neighbor_symbol = True
                             except IndexError:
                                 pass
             else:
-                if number: #score it
+                if number:  # score it
                     if found_neighbor_symbol:
                         score += int(number)
                     number = ""
@@ -40,6 +44,7 @@ def part_one(input_filename):
             number = ""
             found_neighbor_symbol = False
     return score
+
 
 def find_neighbor_numbers(coord, input):
     seen = set()
@@ -56,7 +61,12 @@ def find_neighbor_numbers(coord, input):
             # fan left
             while True:
                 current_coord = numpy.add(current_coord, (-1, 0))
-                if current_coord[0] < 0 or current_coord[1] < 0 or current_coord[0] > (len(input[0]) - 1) or current_coord[1] > (len(input) - 1):
+                if (
+                    current_coord[0] < 0
+                    or current_coord[1] < 0
+                    or current_coord[0] > (len(input[0]) - 1)
+                    or current_coord[1] > (len(input) - 1)
+                ):
                     break
                 if input[current_coord[1]][current_coord[0]].isdigit():
                     if tuple(current_coord) in seen:
@@ -72,7 +82,12 @@ def find_neighbor_numbers(coord, input):
             current_coord = test_coord
             while True:
                 current_coord = numpy.add(current_coord, (1, 0))
-                if current_coord[0] < 0 or current_coord[1] < 0 or current_coord[0] > (len(input[0]) - 1) or current_coord[1] > (len(input) - 1):
+                if (
+                    current_coord[0] < 0
+                    or current_coord[1] < 0
+                    or current_coord[0] > (len(input[0]) - 1)
+                    or current_coord[1] > (len(input) - 1)
+                ):
                     break
                 if input[current_coord[1]][current_coord[0]].isdigit():
                     if tuple(current_coord) in seen:
@@ -98,17 +113,17 @@ def part_two(input_filename):
                     score += int(neighbor_numbers[0]) * int(neighbor_numbers[1])
     return score
 
+
 if __name__ == "__main__":
     print("*** PART ONE ***\n")
     print(f"Test result = {part_one('inputtest.txt')}\n")
-    p1result = part_one('input.txt')
+    p1result = part_one("input.txt")
     print(f"REAL RESULT = {p1result}\n\n")
     print("*** PART TWO ***\n")
     print(f"Test result = {part_two('inputtest.txt')}\n")
-    p2result = part_two('input.txt')
+    p2result = part_two("input.txt")
     print(f"REAL RESULT = {p2result}")
     if p2result:
         pyperclip.copy(p2result)
     elif p1result:
         pyperclip.copy(p1result)
-

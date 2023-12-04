@@ -40,7 +40,7 @@ def nested_list_to_int(input_data):
 
 def create_folder_structure():
     cwd = pathlib.Path().resolve()
-    for i in range(1,26):
+    for i in range(1, 26):
         day_number = str(i).zfill(2)
         newdir_path = os.path.join(cwd, day_number)
 
@@ -53,18 +53,20 @@ def create_folder_structure():
             pathlib.Path(os.path.join(newdir_path, filename)).touch()
 
         exercise_filename = f"exercise_{day_number}.py"
-        shutil.copy((os.path.join(cwd, "template.py")), os.path.join(newdir_path, exercise_filename))
+        shutil.copy(
+            (os.path.join(cwd, "template.py")),
+            os.path.join(newdir_path, exercise_filename),
+        )
 
 
 def download_problem_for_day(day, year=YEAR):
-
     year = year if year else YEAR
     day_url = BASE_URL + f"{year}/day/{str(day)}"
     gh_cookie = os.environ.get("GH_COOKIE")
     day_number = str(day).zfill(2)
     cwd = pathlib.Path().resolve()
 
-    response = requests.get(day_url, headers={"cookie":gh_cookie})
+    response = requests.get(day_url, headers={"cookie": gh_cookie})
     parsed_response = html2text.html2text(response.text)
 
     # drop header nonsense
@@ -120,16 +122,18 @@ def post_answer(day, answer, level=1, year=YEAR):
     day_url = BASE_URL + f"{year}/day/{str(day)}"
     gh_cookie = os.environ.get("GH_COOKIE")
     body = {"answer": str(answer), "level": level}
-    response = requests.post(day_url + "/answer", data=body, headers={"cookie": gh_cookie})
+    response = requests.post(
+        day_url + "/answer", data=body, headers={"cookie": gh_cookie}
+    )
     print(response.text)
     return response
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--init', action='store_true')
-    parser.add_argument('-d', '--day', type=int, help="Day to pull down")
-    parser.add_argument('-y', '--year', type=int, help="AoC year to target")
+    parser.add_argument("-i", "--init", action="store_true")
+    parser.add_argument("-d", "--day", type=int, help="Day to pull down")
+    parser.add_argument("-y", "--year", type=int, help="AoC year to target")
     args = parser.parse_args()
     if args.init:
         create_folder_structure()

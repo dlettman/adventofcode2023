@@ -1,11 +1,12 @@
 import sys
+
 sys.path.append("..")
 from helpers import helpers
 import pyperclip
 
 
 def part_one(input_filename):
-    maxes = {'red': 12, 'green': 13, 'blue': 14}
+    maxes = {"red": 12, "green": 13, "blue": 14}
     input = helpers.parse_input(input_filename)
     games = {}
     score = 0
@@ -49,7 +50,7 @@ def part_two(input_filename):
             rounds.append([seg.strip(",") for seg in segment.strip().split(" ")])
         games[game_num] = rounds
     for game, rounds in games.items():
-        maxes = {'red': 0, 'green': 0, 'blue': 0}
+        maxes = {"red": 0, "green": 0, "blue": 0}
         for round in rounds:
             counter = None
             for element in round:
@@ -59,18 +60,18 @@ def part_two(input_filename):
                     color = element.strip(",")
                     maxes[color] = max(maxes[color], counter)
                     counter = None
-        score += maxes['red'] * maxes['green'] * maxes['blue']
+        score += maxes["red"] * maxes["green"] * maxes["blue"]
     return score
 
 
 if __name__ == "__main__":
     print("*** PART ONE ***\n")
     print(f"Test result = {part_one('inputtest.txt')}\n")
-    p1result = part_one('input.txt')
+    p1result = part_one("input.txt")
     print(f"REAL RESULT = {p1result}\n\n")
     print("*** PART TWO ***\n")
     print(f"Test result = {part_two('inputtest.txt')}\n")
-    p2result = part_two('input.txt')
+    p2result = part_two("input.txt")
     print(f"REAL RESULT = {p2result}")
     if p2result:
         pyperclip.copy(p2result)
