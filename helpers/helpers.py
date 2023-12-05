@@ -38,6 +38,17 @@ def nested_list_to_int(input_data):
     return [[int(x) for x in lst] for lst in input_data]
 
 
+def out_of_bounds(coord, map):
+    return any(
+        [
+            coord[0] < 0,
+            coord[1] < 0,
+            coord[0] > (len(map[0]) - 1),
+            coord[1] > (len(map) - 1),
+        ]
+    )
+
+
 def create_folder_structure():
     cwd = pathlib.Path().resolve()
     for i in range(1, 26):

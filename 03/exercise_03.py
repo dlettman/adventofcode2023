@@ -12,6 +12,17 @@ def is_symbol(char):
     return (not char.isdigit()) and char != "."
 
 
+def out_of_bounds(coord, map):
+    return any(
+        [
+            coord[0] < 0,
+            coord[1] < 0,
+            coord[0] > (len(map[0]) - 1),
+            coord[1] > (len(map) - 1),
+        ]
+    )
+
+
 def part_one(input_filename):
     input = helpers.parse_input(input_filename)
     score = 0
@@ -61,12 +72,7 @@ def find_neighbor_numbers(coord, input):
             # fan left
             while True:
                 current_coord = numpy.add(current_coord, (-1, 0))
-                if (
-                    current_coord[0] < 0
-                    or current_coord[1] < 0
-                    or current_coord[0] > (len(input[0]) - 1)
-                    or current_coord[1] > (len(input) - 1)
-                ):
+                if out_of_bounds(current_coord, input):
                     break
                 if input[current_coord[1]][current_coord[0]].isdigit():
                     if tuple(current_coord) in seen:
@@ -82,12 +88,7 @@ def find_neighbor_numbers(coord, input):
             current_coord = test_coord
             while True:
                 current_coord = numpy.add(current_coord, (1, 0))
-                if (
-                    current_coord[0] < 0
-                    or current_coord[1] < 0
-                    or current_coord[0] > (len(input[0]) - 1)
-                    or current_coord[1] > (len(input) - 1)
-                ):
+                if out_of_bounds(current_coord, input):
                     break
                 if input[current_coord[1]][current_coord[0]].isdigit():
                     if tuple(current_coord) in seen:

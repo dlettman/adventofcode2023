@@ -6,7 +6,6 @@ import pyperclip
 from math import floor
 
 
-
 def parse_cards(input):
     cards = {}
     for line in input:
@@ -38,7 +37,9 @@ def part_two(input_filename):
     card_count = {str(n + 1): 1 for n in range(len(input))}
     for card in cards:
         card_multiplier = card_count[card]
-        card_score = len(cards[card]["winning_nums"].intersection(cards[card]["your_nums"]))
+        card_score = len(
+            cards[card]["winning_nums"].intersection(cards[card]["your_nums"])
+        )
         next_card = int(card) + 1
         for n in range(card_score):
             card_count[str(next_card)] += card_multiplier
