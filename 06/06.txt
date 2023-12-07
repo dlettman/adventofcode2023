@@ -55,7 +55,7 @@ So, because the first race lasts 7 milliseconds, you only have a few options:
   * Hold the button for _`4` milliseconds_. After its remaining 3 milliseconds of travel time, the boat will have gone _`12` millimeters_.
   * Hold the button for _`5` milliseconds_, causing the boat to travel a total of _`10` millimeters_.
   * Hold the button for _`6` milliseconds_, causing the boat to travel a total of _`6` millimeters_.
-  * Hold the button for _`7` milliseconds_. That's the entire duration of the race. You never let go of the button. The boat can't move until you let you of the button. Please make sure you let go of the button so the boat gets to move. _`0` millimeters_.
+  * Hold the button for _`7` milliseconds_. That's the entire duration of the race. You never let go of the button. The boat can't move until you let go of the button. Please make sure you let go of the button so the boat gets to move. _`0` millimeters_.
 
 Since the current record for this race is `9` millimeters, there are actually
 `_4_` different ways you could win: you could hold the button for `2`, `3`,
@@ -76,10 +76,4 @@ values together, you get `_288_` (`4` * `8` * `9`).
 Determine the number of ways you could beat the record in each race. _What do
 you get if you multiply these numbers together?_
 
-To begin, [get your puzzle input](6/input).
-
-Answer:
-
-You can also [Shareon
-[Twitter](https://twitter.com/intent/tweet?text=%22Wait+For+It%22+%2D+Day+6+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F6&related=ericwastl&hashtags=AdventOfCode)
-[Mastodon](javascript:void\(0\);)] this puzzle.
+Your puzzle answer was `227850`.
