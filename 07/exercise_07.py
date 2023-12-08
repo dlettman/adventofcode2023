@@ -1,4 +1,5 @@
 import sys
+import time
 
 sys.path.append("..")
 from helpers import helpers
@@ -93,7 +94,10 @@ if __name__ == "__main__":
     print(f"REAL RESULT = {p1result}\n\n")
     print("*** PART TWO ***\n")
     print(f"Test result = {part_two('inputtest.txt')}\n")
+    start = time.time()
     p2result = part_two("input.txt")
+    end = time.time()
+    print(f"Time = {end - start}")
     print(f"REAL RESULT = {p2result}")
     if p2result:
         pyperclip.copy(p2result)
