@@ -20,17 +20,23 @@ def build_me_a_pyramid(line):
     return pyramid
 
 
+def find_the_mummys_gold(pyramid, side="right"):
+    new_num = 0
+    while pyramid:  # pop rows off and fill
+        row = pyramid.pop()
+        if side == "right":
+            new_num = row[-1] + new_num
+        elif side == "left":
+            new_num = row[0] - new_num
+    return new_num
+
+
 def part_one(input_filename):
     input = helpers.parse_input(input_filename)
     extrapolated = []
     for line in input:
         pyramid = build_me_a_pyramid(line)
-        new_num = 0
-        while pyramid:  # pop rows off and fill
-            row = pyramid.pop()
-            new_num = row[-1] + new_num
-            row.append(new_num)
-        extrapolated.append(new_num)
+        extrapolated.append(find_the_mummys_gold(pyramid))
     return sum(extrapolated)
 
 
@@ -39,19 +45,15 @@ def part_two(input_filename):
     extrapolated = []
     for line in input:
         pyramid = build_me_a_pyramid(line)
-        new_num = 0
-        while pyramid:  # pop rows off and fill
-            row = pyramid.pop()
-            new_num = row[0] - new_num
-        extrapolated.append(new_num)
+        extrapolated.append(find_the_mummys_gold(pyramid, side="left"))
     return sum(extrapolated)
 
 
 if __name__ == "__main__":
     print("*** PART ONE ***\n")
     print(f"Test result = {part_one('inputtest.txt')}\n")
-    # p1result = part_one("input.txt")
-    # print(f"REAL RESULT = {p1result}\n\n")
+    p1result = part_one("input.txt")
+    print(f"REAL RESULT = {p1result}\n\n")
     print("*** PART TWO ***\n")
     print(f"Test result = {part_two('inputtest.txt')}\n")
     p2result = part_two("input.txt")
