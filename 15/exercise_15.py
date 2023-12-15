@@ -1,15 +1,15 @@
-import sys
+import re
+import time
+
+import pyperclip
 
 from helpers import helpers
-import pyperclip
-import time
-import re
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     score = 0
-    seqs = input[0].split(",")
+    seqs = puzzle_input[0].split(",")
     for seq in seqs:
         score += get_hash(seq)
     return score
@@ -26,9 +26,9 @@ def get_hash(string):
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     score = 0
-    seqs = input[0].split(",")
+    seqs = puzzle_input[0].split(",")
     boxes = {n: {} for n in range(256)}
     for seq in seqs:
         letters = re.search("[a-z]+", seq).group(0)

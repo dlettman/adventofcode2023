@@ -5,20 +5,20 @@ import pyperclip
 from helpers import helpers
 
 
-def get_maps(input):
-    maps = []
-    cur_map = []
+def get_grids(input):
+    grids = []
+    cur_grid = []
     for line in input:
         if not line:
-            maps.append(cur_map.copy())
-            cur_map = []
+            grids.append(cur_grid.copy())
+            cur_grid = []
         else:
-            cur_map.append(line)
-    maps.append(cur_map)
-    return maps
+            cur_grid.append(line)
+    grids.append(cur_grid)
+    return grids
 
 
-def rotate_map(map):
+def rotate_grid(map):
     rotated = ["".join([line[n] for line in map]) for n in range(len(map[0]))]
     return rotated
 
@@ -41,7 +41,7 @@ def find_vert_reflection(map):
 
 
 def find_horiz_reflection(map):
-    rotated = rotate_map(map)
+    rotated = rotate_grid(map)
     return find_vert_reflection(rotated)
 
 
@@ -64,35 +64,35 @@ def find_smudge(left, right, reflection_point):
     return smudge if smudge else 0
 
 
-def find_vert_smudge(map):
-    for reflection_point in range(len(map[0])):
-        left, right = get_potential_reflections(reflection_point, map)
+def find_vert_smudge(grid):
+    for reflection_point in range(len(grid[0])):
+        left, right = get_potential_reflections(reflection_point, grid)
         smudge = find_smudge(left, right, reflection_point)
         if smudge:
             return smudge
     return 0
 
 
-def find_horiz_smudge(map):
-    rotated = rotate_map(map)
+def find_horiz_smudge(grid):
+    rotated = rotate_grid(grid)
     return find_vert_smudge(rotated)
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
-    maps = get_maps(input)
+    puzzle_input = helpers.parse_input(input_filename)
+    grids = get_grids(puzzle_input)
     score = 0
-    for idx, map in enumerate(maps):
-        score += find_vert_reflection(map)
-        score += 100 * find_horiz_reflection(map)
+    for idx, grid in enumerate(grids):
+        score += find_vert_reflection(grid)
+        score += 100 * find_horiz_reflection(grid)
     return score
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
-    maps = get_maps(input)
+    puzzle_input = helpers.parse_input(input_filename)
+    grids = get_grids(puzzle_input)
     score = 0
-    for idx, map in enumerate(maps):
+    for idx, map in enumerate(grids):
         score += find_vert_smudge(map)
         score += 100 * find_horiz_smudge(map)
     return score

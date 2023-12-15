@@ -1,9 +1,8 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
-import pyperclip
 from itertools import count
+
+import pyperclip
+
+from helpers import helpers
 
 
 def parse_range(line, part2=False):
@@ -38,11 +37,11 @@ def get_location_from_map(seed, big_map):
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
-    seeds = [int(item) for item in input[0].split(": ")[1].split()]
+    puzzle_input = helpers.parse_input(input_filename)
+    seeds = [int(item) for item in puzzle_input[0].split(": ")[1].split()]
     source = ""
     big_map = {}
-    for line in input[1:]:
+    for line in puzzle_input[1:]:
         if not line:
             continue
         elif "map" in line:
@@ -65,10 +64,10 @@ def parse_seeds(seed_line):
     return seeds
 
 
-def build_mapping_list(input):
+def build_mapping_list(puzzle_input):
     mappings_list = []
     current_map = {}
-    for line in input:
+    for line in puzzle_input:
         if not line:
             continue
         elif "map" in line:
@@ -84,9 +83,9 @@ def build_mapping_list(input):
 
 def part_two(input_filename):
     # playtime's over. time to strategically apply brute force
-    input = helpers.parse_input(input_filename)
-    seeds = parse_seeds(input[0].split(": ")[1])
-    mappings_list = build_mapping_list(input[2:])
+    puzzle_input = helpers.parse_input(input_filename)
+    seeds = parse_seeds(puzzle_input[0].split(": ")[1])
+    mappings_list = build_mapping_list(puzzle_input[2:])
     mappings_list.reverse()
     for n in count():
         if not n % 100000:  # little heartbeat so I know it's doing something

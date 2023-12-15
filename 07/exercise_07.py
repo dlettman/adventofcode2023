@@ -1,10 +1,9 @@
-import sys
 import time
-
-sys.path.append("..")
-from helpers import helpers
-import pyperclip
 from collections import Counter
+
+import pyperclip
+
+from helpers import helpers
 
 RANKS = "AKQJT98765432"
 RANK_DICT = {char: idx for idx, char in enumerate(RANKS)}
@@ -72,8 +71,8 @@ def make_ranking(tiers, part_2=False):
 
 
 def do_it(input_filename, part_2=False):
-    input = helpers.parse_input(input_filename)
-    tiers = make_tiers(input, part_2=part_2)
+    puzzle_input = helpers.parse_input(input_filename)
+    tiers = make_tiers(puzzle_input, part_2=part_2)
     ranked = make_ranking(tiers, part_2=part_2)
     score = sum([(idx + 1) * hand[1] for idx, hand in enumerate(ranked)])
     return score

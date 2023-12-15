@@ -1,12 +1,11 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
-import pyperclip
 import time
 
+import pyperclip
 
-def get_manhattan_distancemanhattan(a, b):
+from helpers import helpers
+
+
+def get_manhattan_distance(a, b):
     return sum(abs(val1 - val2) for val1, val2 in zip(a, b))
 
 
@@ -32,7 +31,7 @@ def expansion_coordinate(coordinate, empty_columns, empty_rows, expansion_factor
     return (new_x, new_y)
 
 
-def parse_map(map, empty_columns, empty_rows, expansion_factor=1):
+def parse_grid(map, empty_columns, empty_rows, expansion_factor=1):
     galaxy_coords = []
     for y, line in enumerate(map):
         for x, char in enumerate(line):
@@ -49,22 +48,22 @@ def get_pair_distances(galaxies):
     pairs_distances = []
     for n1, galaxy1 in enumerate(galaxies):
         for n2, galaxy2 in enumerate(galaxies[n1 + 1 :]):
-            pairs_distances.append(get_manhattan_distancemanhattan(galaxy1, galaxy2))
+            pairs_distances.append(get_manhattan_distance(galaxy1, galaxy2))
     return pairs_distances
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
-    empty_columns, empty_rows = get_empty_rows(input)
-    galaxies = parse_map(input, empty_columns, empty_rows)
+    puzzle_input = helpers.parse_input(input_filename)
+    empty_columns, empty_rows = get_empty_rows(puzzle_input)
+    galaxies = parse_grid(puzzle_input, empty_columns, empty_rows)
     distances = get_pair_distances(galaxies)
     return sum(distances)
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
-    empty_columns, empty_rows = get_empty_rows(input)
-    galaxies = parse_map(input, empty_columns, empty_rows, expansion_factor=(999999))
+    puzzle_input = helpers.parse_input(input_filename)
+    empty_columns, empty_rows = get_empty_rows(puzzle_input)
+    galaxies = parse_grid(puzzle_input, empty_columns, empty_rows, expansion_factor=(999999))
     distances = get_pair_distances(galaxies)
     return sum(distances)
 

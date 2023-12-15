@@ -1,30 +1,29 @@
 import math
-import sys
-
-sys.path.append("..")
-from helpers import helpers
-import pyperclip
 from itertools import cycle
+
+import pyperclip
+
+from helpers import helpers
 
 
 def parse_map(map_lines):
-    map = {}
+    mappings = {}
     for line in map_lines:
         source, dests = line.split(" = ")
         l_dest, r_dest = [item.strip("()") for item in dests.split(", ")]
-        map[source] = {"L": l_dest, "R": r_dest}
-    return map
+        mappings[source] = {"L": l_dest, "R": r_dest}
+    return mappings
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
-    directions = cycle(input[0])
-    map = parse_map(input[2:])
+    puzzle_input = helpers.parse_input(input_filename)
+    directions = cycle(puzzle_input[0])
+    mappings = parse_map(puzzle_input[2:])
     score = 0
     current_location = "AAA"
     while current_location != "ZZZ":
         direction = next(directions)
-        current_location = map[current_location][direction]
+        current_location = mappings[current_location][direction]
         score += 1
     return score
 
@@ -37,11 +36,11 @@ def check_locations(locations):
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
-    directions = cycle(input[0])
-    map = parse_map(input[2:])
+    puzzle_input = helpers.parse_input(input_filename)
+    directions = cycle(puzzle_input[0])
+    mappings = parse_map(puzzle_input[2:])
     score = 0
-    current_locations = [location for location in map if location[-1] == "A"]
+    current_locations = [location for location in mappings if location[-1] == "A"]
     cycles = {n: [] for n in range(len(current_locations))}
     while not check_locations(current_locations):
         new_locations = []
@@ -49,7 +48,7 @@ def part_two(input_filename):
         for idx, location in enumerate(current_locations):
             if check_locations([location]):
                 cycles[idx].append(score)
-            new_locations.append(map[location][direction])
+            new_locations.append(mappings[location][direction])
         score += 1
         current_locations = new_locations
         if all(cycles.values()):

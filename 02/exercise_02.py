@@ -1,16 +1,14 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
 import pyperclip
+
+from helpers import helpers
 
 
 def part_one(input_filename):
     maxes = {"red": 12, "green": 13, "blue": 14}
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     games = {}
     score = 0
-    for idx, line in enumerate(input):
+    for idx, line in enumerate(puzzle_input):
         game_num = line.split(":")[0].split(" ")[1]
         rounds = []
         for segment in line.split(":")[1].split(";"):
@@ -40,10 +38,10 @@ def part_one(input_filename):
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     games = {}
     score = 0
-    for idx, line in enumerate(input):
+    for idx, line in enumerate(puzzle_input):
         game_num = line.split(":")[0].split(" ")[1]
         rounds = []
         for segment in line.split(":")[1].split(";"):

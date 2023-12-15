@@ -1,8 +1,6 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
 import pyperclip
+
+from helpers import helpers
 
 
 def build_me_a_pyramid(line):
@@ -32,18 +30,18 @@ def find_the_mummys_gold(pyramid, side="right"):
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     extrapolated = []
-    for line in input:
+    for line in puzzle_input:
         pyramid = build_me_a_pyramid(line)
         extrapolated.append(find_the_mummys_gold(pyramid))
     return sum(extrapolated)
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     extrapolated = []
-    for line in input:
+    for line in puzzle_input:
         pyramid = build_me_a_pyramid(line)
         extrapolated.append(find_the_mummys_gold(pyramid, side="left"))
     return sum(extrapolated)

@@ -1,12 +1,10 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
-import time
 import functools
+import time
+from typing import List
+
 import pyperclip
 
-from typing import List
+from helpers import helpers
 
 CHAR_BIN_MAPPING = {".": "0", "#": "1"}
 
@@ -30,9 +28,6 @@ def get_combo_count_for_line(slots, groups):
         if verify_combo(slotted, groups, slots):
             successful_combos += 1
         comb_attempt += 1
-
-
-CHAR_BIN_MAPPING = {".": "0", "#": "1"}
 
 
 def verify_combo(
@@ -72,9 +67,9 @@ def verify_combo(
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     score = 0
-    for line in input:
+    for line in puzzle_input:
         slots, groups = parse_line(line)
         print(slots)
         print(groups)
@@ -124,9 +119,9 @@ def get_solution_count(springs: tuple, contigs: tuple, current_run=0) -> int:
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     score = 0
-    for line in input:
+    for line in puzzle_input:
         springs, groups = parse_line(line)
         springs = (list(springs + ["?"]) * 5)[:-1]
         groups = [int(item) for item in groups]

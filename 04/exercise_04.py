@@ -1,14 +1,13 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
-import pyperclip
 from math import floor
 
+import pyperclip
 
-def parse_cards(input):
+from helpers import helpers
+
+
+def parse_cards(puzzle_input):
     cards = {}
-    for line in input:
+    for line in puzzle_input:
         card_num, nums = line.split(": ")
         card_num = card_num.split()[1]
         winning_nums, your_nums = nums.split(" | ")
@@ -20,9 +19,9 @@ def parse_cards(input):
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
+    puzzle_input = helpers.parse_input(input_filename)
     score = 0
-    cards = parse_cards(input)
+    cards = parse_cards(puzzle_input)
     for card in cards:
         card_score = 0.5
         for _ in cards[card]["winning_nums"].intersection(cards[card]["your_nums"]):
@@ -32,9 +31,9 @@ def part_one(input_filename):
 
 
 def part_two(input_filename):
-    input = helpers.parse_input(input_filename)
-    cards = parse_cards(input)
-    card_count = {str(n + 1): 1 for n in range(len(input))}
+    puzzle_input = helpers.parse_input(input_filename)
+    cards = parse_cards(puzzle_input)
+    card_count = {str(n + 1): 1 for n in range(len(puzzle_input))}
     for card in cards:
         card_multiplier = card_count[card]
         card_score = len(

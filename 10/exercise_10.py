@@ -1,11 +1,9 @@
-import sys
-
-sys.path.append("..")
-from helpers import helpers
-import pyperclip
-from numpy import add
 from typing import List
 
+import pyperclip
+from numpy import add
+
+from helpers import helpers
 
 CONNECTIONS = {
     "|": [(0, 1), (0, -1)],
@@ -45,8 +43,8 @@ def find_loop(pipes):
 
 
 def part_one(input_filename):
-    input = helpers.parse_input(input_filename)
-    return (len(find_loop(input)[0]) + 1) // 2
+    puzzle_input = helpers.parse_input(input_filename)
+    return (len(find_loop(puzzle_input)[0]) + 1) // 2
 
 
 FLIPPERS = "JL|"  # puzzled out by drawing a bunch of diagrams, these are the symbols on the loop that will transition you from outside to inside and vice versa when scanning left to right
