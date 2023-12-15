@@ -48,6 +48,86 @@ def out_of_bounds(coord, map):
         ]
     )
 
+class Coordinate(object):
+
+    def __init__(self, *coordinate_tuple):
+        if len(coordinate_tuple) == 1:
+            try:
+                self.data = tuple(coordinate_tuple[0])
+            except TypeError:
+                self.data = tuple(coordinate_tuple)
+        else:
+            self.data = tuple([item for item in coordinate_tuple])
+
+    @property
+    def x(self):
+        if not self.data:
+            return None
+        else:
+            return self.data[0]
+
+    @x.setter
+    def x(self, value):
+        self.__setitem__(0, value)
+
+    @property
+    def y(self):
+        if len(self.data) < 2:
+            return None
+        else:
+            return self.data[1]
+
+    @y.setter
+    def y(self, value):
+        self.__setitem__(1, value)
+
+    @property
+    def z(self):
+        if len(self.data) < 3:
+            return None
+        else:
+            return self.data[1]
+
+    @z.setter
+    def z(self, value):
+        self.__setitem__(2, value)
+
+    def __str__(self):
+        return str(self.data)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __add__(self, other):
+        if not len(self) == len(other):
+            raise IndexError("Coordinate addition not supported for objects of different length")
+        return Coordinate([self.data[n] + other[n] for n in range(len(self))])
+
+    def __sub__(self, other):
+        if not len(self) == len(other):
+            raise IndexError("Coordinate subtraction not supported for objects of different length")
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def __getitem__(self, item):
+        return self.data[item]
+
+    def __setitem__(self, key, value):
+        if len(self.data) < (key - 1):
+            raise IndexError(f"Coordinate is {len(self.data)}-dimensional")
+        data_list = list(self.data)  # make a mutable copy
+        data_list[key] = value
+        self.data = tuple(data_list)
+
+
+
+
+
+
+
+
+
 
 def create_folder_structure():
     cwd = pathlib.Path().resolve()

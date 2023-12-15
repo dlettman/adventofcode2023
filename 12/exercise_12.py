@@ -4,6 +4,7 @@ sys.path.append("..")
 from helpers import helpers
 import time
 import functools
+import pyperclip
 
 from typing import List
 
