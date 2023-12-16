@@ -48,8 +48,8 @@ def out_of_bounds(coord, map):
         ]
     )
 
-class Coordinate(object):
 
+class Coordinate(object):
     def __init__(self, *coordinate_tuple):
         if len(coordinate_tuple) == 1:
             try:
@@ -95,17 +95,30 @@ class Coordinate(object):
     def __str__(self):
         return str(self.data)
 
+    def __repr__(self):
+        return str(self.data)
+
+    def __hash__(self):
+        return hash(self.data)
+
+    def __eq__(self, other):
+        return self.data == other.data
+
     def __len__(self):
         return len(self.data)
 
     def __add__(self, other):
         if not len(self) == len(other):
-            raise IndexError("Coordinate addition not supported for objects of different length")
+            raise IndexError(
+                "Coordinate addition not supported for objects of different length"
+            )
         return Coordinate([self.data[n] + other[n] for n in range(len(self))])
 
     def __sub__(self, other):
         if not len(self) == len(other):
-            raise IndexError("Coordinate subtraction not supported for objects of different length")
+            raise IndexError(
+                "Coordinate subtraction not supported for objects of different length"
+            )
 
     def __iter__(self):
         return iter(self.data)
@@ -119,14 +132,6 @@ class Coordinate(object):
         data_list = list(self.data)  # make a mutable copy
         data_list[key] = value
         self.data = tuple(data_list)
-
-
-
-
-
-
-
-
 
 
 def create_folder_structure():

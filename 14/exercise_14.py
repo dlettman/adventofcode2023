@@ -26,7 +26,7 @@ def slide_rocks(grid, direction=N):
                 while True:
                     new_coord = tuple(add(coord, direction))
                     if (not helpers.out_of_bounds(new_coord, grid)) and (
-                            grid[new_coord[1]][new_coord[0]] == "."
+                        grid[new_coord[1]][new_coord[0]] == "."
                     ):
                         new_map[new_coord[1]][new_coord[0]] = "O"
                         new_map[coord[1]][coord[0]] = "."

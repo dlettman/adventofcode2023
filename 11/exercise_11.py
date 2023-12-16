@@ -63,7 +63,9 @@ def part_one(input_filename):
 def part_two(input_filename):
     puzzle_input = helpers.parse_input(input_filename)
     empty_columns, empty_rows = get_empty_rows(puzzle_input)
-    galaxies = parse_grid(puzzle_input, empty_columns, empty_rows, expansion_factor=(999999))
+    galaxies = parse_grid(
+        puzzle_input, empty_columns, empty_rows, expansion_factor=(999999)
+    )
     distances = get_pair_distances(galaxies)
     return sum(distances)
 
