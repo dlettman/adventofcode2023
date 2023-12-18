@@ -2,7 +2,6 @@ import time
 from collections import deque
 
 import pyperclip
-from shapely import polygons, buffer
 
 from helpers import helpers
 from helpers.helpers import Coordinate
@@ -43,7 +42,7 @@ def visualize_it(dug_locations, seen):
     return len(seen) + len(dug_locations)
 
 
-def part_one(input_filename):
+def part_one(input_filename):  # Naive approach
     puzzle_input = helpers.parse_input(input_filename)
     parsed_input = parse_input(puzzle_input)
     digger_location = Coordinate(0, 0)
@@ -79,7 +78,7 @@ def part_one(input_filename):
                 if outside:
                     found_it = False
                     break
-            if found_it and not outside:
+            if found_it:
                 return len(seen) + len(dug_locations)
     return "dang"
 
@@ -99,12 +98,28 @@ def parse_hex(line):
     return magnitude, direction
 
 
-def part_two(input_filename):
+def shoelace_formula(vertices):
+    return abs(
+        sum(
+            (vertices[i][0] - vertices[i - 1][0])
+            * (vertices[i][1] + vertices[i - 1][1])
+            for i in range(1, len(vertices))
+        )
+        / 2
+    )
+
+
+def picks_theorem(int_area, ext_points):
+    return int(int_area + (ext_points // 2) + 1)
+
+
+def part_two(input_filename):  # Use geometry
     puzzle_input = helpers.parse_input(input_filename)
     for line in puzzle_input:
         parse_hex(line)
     digger_location = Coordinate(0, 0)
     corners = [digger_location]
+    total_magnitude = 0
     for line in puzzle_input:
         magnitude, direction = parse_hex(line)
         digger_location = (
@@ -112,10 +127,11 @@ def part_two(input_filename):
             + digger_location
         )
         corners.append(digger_location)
+        total_magnitude += magnitude
     corners = [(coord.x, coord.y) for coord in corners]
-    polygon = polygons(corners)
-    polygon = buffer(polygon, 0.5, join_style="mitre")
-    return int(polygon.area)
+    int_area = shoelace_formula(corners)
+    total_area = picks_theorem(int_area, total_magnitude)
+    return total_area
 
 
 if __name__ == "__main__":
