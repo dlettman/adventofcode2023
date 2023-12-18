@@ -6,6 +6,8 @@ import pyperclip
 from helpers import helpers
 from helpers.helpers import Coordinate
 
+from functools import cache
+
 DIRECTIONS = {
     "N": Coordinate(0, -1),
     "S": Coordinate(0, 1),
@@ -40,12 +42,10 @@ class Beam(object):
         return hash(tuple([self.location, self.direction]))
 
     def __eq__(self, other):
-        return (
-            self.location == other.location
-            and self.direction == other.direction
-        )
+        return self.location == other.location and self.direction == other.direction
 
 
+@cache
 def do_beams(beams, puzzle_input):
     energized = set()
     location_direction_record = set()
@@ -101,7 +101,7 @@ def do_beams(beams, puzzle_input):
         if not helpers.out_of_bounds(beam.location, puzzle_input):
             if beam not in location_direction_record:
                 beams.append(beam)
-    return len(energized)
+    return energized
 
 
 def part_one(input_filename):
