@@ -9,70 +9,75 @@ import heapq
 from collections import namedtuple
 
 
-def create_grid(input_data, scale_factor):
-    rows = []
+def create_grid(puzzle_input, max_moves=3):
     coord_risk_dict = {}
-    for y_iter in range(scale_factor):
-        for row in input_data:
-            new_row = []
-            for x_iter in range(scale_factor):
-                new_row += [int(item) + x_iter + y_iter for item in row]
-            for idx, num in enumerate(new_row):
-                if num > 9:
-                    new_row[idx] = num - 9
-            rows.append(new_row)
-    for y, row in enumerate(rows):
+    for y, row in enumerate(puzzle_input):
         for x, value in enumerate(row):
-            coord_risk_dict[(x, y)] = value
+            for neighbor in helpers.NEIGHBORS_ORTH:
+                for n in range(1, max_moves + 1):
+                    coord_risk_dict[(x, y, neighbor, n)] = value  # x, y, last dir, num moves in that dir
     return coord_risk_dict
 
 
-Move = namedtuple("Move", ["risk", "x", "y", "last_moves"])
+Move = namedtuple("Move", ["risk", "x", "y", "last_dir", "moves_in_that_dir"])
 
 
 def part_one(input_filename):
     puzzle_input = helpers.parse_input(input_filename)
-    grid = create_grid(puzzle_input, 1)
-    scale_mod = 1
-    max_x = len(puzzle_input[0] * scale_mod)
-    max_y = len(puzzle_input * scale_mod)
-    total_risks = {key: None for key in grid.keys()}
-    total_risks[(0, 0)] = 0
-    queue = [Move(0, 0, 0, [])]
-    while not total_risks[(max_x - 1), (max_y - 1)]:
-        risk, x, y, last_moves = heapq.heappop(queue)
+    grid = create_grid(puzzle_input)
+    max_x = len(puzzle_input[0])
+    max_y = len(puzzle_input)
+    grid = {key: None for key in grid.keys()}
+    grid[(0, 0, (0, 0), 0)] = 0  # x, y, last dir, num moves in that dir
+    queue = [Move(0, 0, 0, None, 0)]
+    while True:
+        risk, x, y, last_dir, moves_in_that_dir = heapq.heappop(queue)
         for delta_x, delta_y in helpers.NEIGHBORS_ORTH:
-            if len(last_moves) == 3 and last_moves[-1] == (
-                delta_x,
-                delta_y,
-            ):  # disqualify triple moves
+            if (moves_in_that_dir == 3 and (last_dir == (delta_x, delta_y))) or (last_dir == (-1 * delta_x, -1 * delta_y)):  # disqualify quadruple moves
                 continue
             new_x, new_y = x + delta_x, y + delta_y
+            dir = (delta_x, delta_y)
+            num_moves = moves_in_that_dir + 1 if (last_dir == dir) else 1
             if (
                 0 <= new_x < max_x
                 and 0 <= new_y < max_y
-                and not total_risks[(new_x, new_y)]
+                and not grid[(new_x, new_y, dir, num_moves)]
             ):
-                total_risks[(new_x, new_y)] = risk + grid[(new_x, new_y)]
-                recent_moves = last_moves.copy()
-                if recent_moves:
-                    if recent_moves[-1] == (delta_x, delta_y):
-                        recent_moves.append((delta_x, delta_y))
-                    else:
-                        recent_moves = [(delta_x, delta_y)]
-                else:
-                    recent_moves = [(delta_x, delta_y)]
+                grid[(new_x, new_y, dir, num_moves)] = risk + int(puzzle_input[new_y][new_x])
+                if (new_x, new_y) == (max_x - 1, max_y - 1):
+                    return risk + int(puzzle_input[new_y][new_x])
                 heapq.heappush(
-                    queue, (total_risks[(new_x, new_y)], new_x, new_y, recent_moves)
+                    queue, (grid[(new_x, new_y, dir, num_moves)], new_x, new_y, dir, num_moves)
                 )
-    return total_risks[(max_x - 1, max_y - 1)]
 
 
 def part_two(input_filename):
     puzzle_input = helpers.parse_input(input_filename)
-    # do stuff here
-    output = None
-    return output
+    grid = create_grid(puzzle_input, max_moves=10)
+    max_x = len(puzzle_input[0])
+    max_y = len(puzzle_input)
+    grid = {key: None for key in grid.keys()}
+    grid[(0, 0, (0, 0), 0)] = 0  # x, y, last dir, num moves in that dir
+    queue = [Move(0, 0, 0, None, 0)]
+    while True:
+        risk, x, y, last_dir, moves_in_that_dir = heapq.heappop(queue)
+        for delta_x, delta_y in helpers.NEIGHBORS_ORTH:
+            if (moves_in_that_dir == 10 and (last_dir == (delta_x, delta_y))) or (last_dir == (-1 * delta_x, -1 * delta_y)) or (1 <= moves_in_that_dir <= 3 and last_dir != (delta_x, delta_y)):
+                continue
+            new_x, new_y = x + delta_x, y + delta_y
+            dir = (delta_x, delta_y)
+            num_moves = moves_in_that_dir + 1 if (last_dir == dir) else 1
+            if (
+                0 <= new_x < max_x
+                and 0 <= new_y < max_y
+                and not grid[(new_x, new_y, dir, num_moves)]
+            ):
+                grid[(new_x, new_y, dir, num_moves)] = risk + int(puzzle_input[new_y][new_x])
+                if ((new_x, new_y) == (max_x - 1, max_y - 1)) and (4 <= num_moves <= 10):
+                    return risk + int(puzzle_input[new_y][new_x])
+                heapq.heappush(
+                    queue, (grid[(new_x, new_y, dir, num_moves)], new_x, new_y, dir, num_moves)
+                )
 
 
 if __name__ == "__main__":

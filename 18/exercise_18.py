@@ -73,7 +73,7 @@ def part_one(input_filename):
                     else:
                         seen.add(cur_move + neighbor)
                         queue.append(cur_move + neighbor)
-                    if len(seen) > 100000:  # arbitraty break condition
+                    if len(seen) > 100000:  # arbitrary break condition
                         outside = True
                         break
                 if outside:
