@@ -13,7 +13,9 @@ def create_grid(puzzle_input, max_moves=3):
         for x, value in enumerate(row):
             for neighbor in helpers.NEIGHBORS_ORTH:
                 for n in range(1, max_moves + 1):
-                    coord_risk_dict[(x, y, neighbor, n)] = value  # x, y, last dir, num moves in that dir
+                    coord_risk_dict[
+                        (x, y, neighbor, n)
+                    ] = value  # x, y, last dir, num moves in that dir
     return coord_risk_dict
 
 
@@ -30,10 +32,15 @@ def everybody_do_the_dijkstra(puzzle_input, max_moves=3, min_moves=0):
     while True:
         risk, x, y, last_dir, moves_in_that_dir = heapq.heappop(queue)
         for delta_x, delta_y in helpers.NEIGHBORS_ORTH:
-            if (moves_in_that_dir == max_moves and (last_dir == (delta_x, delta_y))) or (last_dir == (-1 * delta_x, -1 * delta_y)):
+            if (
+                moves_in_that_dir == max_moves and (last_dir == (delta_x, delta_y))
+            ) or (last_dir == (-1 * delta_x, -1 * delta_y)):
                 continue
             if min_moves:
-                if (1 <= moves_in_that_dir <= (min_moves - 1) and last_dir != (delta_x, delta_y)):
+                if 1 <= moves_in_that_dir <= (min_moves - 1) and last_dir != (
+                    delta_x,
+                    delta_y,
+                ):
                     continue
             new_x, new_y = x + delta_x, y + delta_y
             dir = (delta_x, delta_y)
@@ -43,11 +50,22 @@ def everybody_do_the_dijkstra(puzzle_input, max_moves=3, min_moves=0):
                 and 0 <= new_y < max_y
                 and not grid[(new_x, new_y, dir, num_moves)]
             ):
-                grid[(new_x, new_y, dir, num_moves)] = risk + int(puzzle_input[new_y][new_x])
-                if ((new_x, new_y) == (max_x - 1, max_y - 1)) and (not min_moves or (min_moves <= num_moves <= max_moves)):
+                grid[(new_x, new_y, dir, num_moves)] = risk + int(
+                    puzzle_input[new_y][new_x]
+                )
+                if ((new_x, new_y) == (max_x - 1, max_y - 1)) and (
+                    not min_moves or (min_moves <= num_moves <= max_moves)
+                ):
                     return risk + int(puzzle_input[new_y][new_x])
                 heapq.heappush(
-                    queue, Move(grid[(new_x, new_y, dir, num_moves)], new_x, new_y, dir, num_moves)
+                    queue,
+                    Move(
+                        grid[(new_x, new_y, dir, num_moves)],
+                        new_x,
+                        new_y,
+                        dir,
+                        num_moves,
+                    ),
                 )
 
 
