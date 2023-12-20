@@ -2,15 +2,17 @@ import time
 from collections import deque, namedtuple
 from math import lcm
 
+import pyperclip
+
 from helpers import helpers
 
 Pulse = namedtuple("Pulse", ["destination_module", "sender", "value"])
 
 
 class ConjunctionModule(object):
-    def __init__(self, name, input_modules=[], output_modules=[], pulse_queue=None):
+    def __init__(self, name, input_modules={}, output_modules=[], pulse_queue=None):
         self.name = name
-        self.input_modules = {}
+        self.input_modules = input_modules
         self.output_modules = output_modules
         self.pulse_queue = pulse_queue
 
@@ -86,7 +88,7 @@ def parse_modules(puzzle_input, pulse_queue):
             name, _, *destinations = line[1:].split()
             modules[name] = ConjunctionModule(
                 name,
-                input_modules=[],
+                input_modules={},
                 output_modules=[item.strip(",") for item in destinations],
                 pulse_queue=pulse_queue,
             )
@@ -106,7 +108,7 @@ def link_up_conjunctions(modules):
             try:
                 if hasattr(modules[output_module], "input_modules"):
                     modules[output_module].input_modules[module.name] = 0
-            except KeyError:  # nullop?
+            except KeyError:  # nullop
                 continue
 
 
@@ -142,18 +144,22 @@ def part_two(input_filename):
     pulse_queue = deque()
     modules = parse_modules(puzzle_input, pulse_queue)
     link_up_conjunctions(modules)
-    qn_pulses = {module: [] for module in modules["qn"].input_modules}
+    rx_input = None
+    for module in modules:
+        if "rx" in modules[module].output_modules:
+            rx_input = module
+    rx_input_input_pulses = {module: [] for module in modules[rx_input].input_modules}
     for n in range(1000000000000000000000000000):
         push_button(pulse_queue)
         while pulse_queue:
             pulse = pulse_queue.popleft()
             if (
-                pulse.destination_module == "qn" and pulse.value == 1
-            ):  # hard-coded & module that feeds rx
-                if not len(qn_pulses[pulse.sender]) > 3:
-                    qn_pulses[pulse.sender].append(n + 1)
-                if all([len(v) > 3 for v in qn_pulses.values()]):
-                    return lcm(*[v[-1] - v[-2] for v in qn_pulses.values()])
+                pulse.destination_module == rx_input and pulse.value == 1
+            ):
+                if not len(rx_input_input_pulses[pulse.sender]) > 3:
+                    rx_input_input_pulses[pulse.sender].append(n + 1)
+                if all([len(v) > 3 for v in rx_input_input_pulses.values()]):
+                    return lcm(*[v[-1] - v[-2] for v in rx_input_input_pulses.values()])
             try:
                 modules[pulse.destination_module].receive_pulse(
                     pulse.sender, pulse.value
