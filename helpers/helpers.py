@@ -4,8 +4,10 @@ import os
 import pathlib
 import re
 import shutil
+import time
 
 import html2text
+import pyperclip
 import requests
 
 
@@ -132,6 +134,41 @@ class Coordinate(object):
         data_list = list(self.data)  # make a mutable copy
         data_list[key] = value
         self.data = tuple(data_list)
+
+
+def display_outupt(
+    part1_func=None,
+    part1_test=True,
+    part1=True,
+    part2_func=None,
+    part2_test=True,
+    part2=True,
+):
+    p1result, p2result = None, None
+    if any([part1, part1_test]):
+        print("*** PART ONE ***\n")
+        if part1_test:
+            print(f"Test result = {part1_func('inputtest.txt')}\n")
+        if part1:
+            onestart = time.time()
+            p1result = part2_func("input.txt")
+            oneend = time.time()
+            print(f"REAL RESULT = {p1result}")
+            print(f"Time = {oneend - onestart}")
+    if any([part2, part2_test]):
+        print("\n*** PART TWO ***\n")
+        if part2_test:
+            print(f"Test result = {part2_func('inputtest.txt')}\n")
+        if part2:
+            twostart = time.time()
+            p2result = part2_func("input.txt")
+            twoend = time.time()
+            print(f"REAL RESULT = {p2result}")
+            print(f"Time = {twoend - twostart}")
+    if p1result:
+        pyperclip.copy(p1result)
+    elif p2result:
+        pyperclip.copy(p2result)
 
 
 def create_folder_structure():

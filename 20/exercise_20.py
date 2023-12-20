@@ -153,9 +153,7 @@ def part_two(input_filename):
         push_button(pulse_queue)
         while pulse_queue:
             pulse = pulse_queue.popleft()
-            if (
-                pulse.destination_module == rx_input and pulse.value == 1
-            ):
+            if pulse.destination_module == rx_input and pulse.value == 1:
                 if not len(rx_input_input_pulses[pulse.sender]) > 3:
                     rx_input_input_pulses[pulse.sender].append(n + 1)
                 if all([len(v) > 3 for v in rx_input_input_pulses.values()]):
@@ -169,21 +167,11 @@ def part_two(input_filename):
 
 
 if __name__ == "__main__":
-    print("*** PART ONE ***\n")
-    print(f"Test result = {part_one('inputtest.txt')}\n")
-    onestart = time.time()
-    p1result = part_one("input.txt")
-    oneend = time.time()
-    print(f"REAL RESULT = {p1result}")
-    print(f"Time = {oneend - onestart}")
-    print("\n")
-    # NO TEST FOR PART 2 WASTL YOU MONSTER
-    twostart = time.time()
-    p2result = part_two("input.txt")
-    twoend = time.time()
-    print(f"REAL RESULT = {p2result}")
-    print(f"Time = {twoend - twostart}")
-    if p1result:
-        pyperclip.copy(p1result)
-    elif p2result:
-        pyperclip.copy(p2result)
+    helpers.display_outupt(
+        part1_func=part_one,
+        part1_test=True,
+        part1=True,
+        part2_func=part_two,
+        part2_test=False,
+        part2=True,
+    )

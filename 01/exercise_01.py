@@ -43,16 +43,11 @@ def part_two(input_filename):
 
 
 if __name__ == "__main__":
-    p1result = None
-    print("*** PART ONE ***\n")
-    print(f"Test result = {part_one('inputtest.txt')}\n")
-    p1result = part_one("input.txt")
-    print(f"REAL RESULT = {p1result}\n\n")
-    print("*** PART TWO ***\n")
-    print(f"Test result = {part_two('inputtest.txt')}\n")
-    p2result = part_two("input.txt")
-    print(f"REAL RESULT = {p2result}")
-    if p1result:
-        pyperclip.copy(p1result)
-    elif p2result:
-        pyperclip.copy(p2result)
+    helpers.display_outupt(
+        part1_func=part_one,
+        part1_test=True,
+        part1=True,
+        part2_func=part_two,
+        part2_test=True,
+        part2=True,
+    )
